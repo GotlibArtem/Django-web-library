@@ -1,3 +1,5 @@
-from django.contrib import admin
+"""
+Admin settings for user section tables.
+"""
 
-# Register your models here.
+from django.contrib import admin

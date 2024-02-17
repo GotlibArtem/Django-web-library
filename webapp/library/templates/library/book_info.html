@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block custom_css %}
+    <link rel="stylesheet" href="{% static 'css/books_style.css' %}">
+{% endblock custom_css %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="card mb-4 border-secondary" style="height: 300px;">
+                    <div class="card-body text-center">
+                        {% if book.book_image %}
+                            <img class="img-fluid rounded-start" src="{{ book.book_image.url }}" style="height: 260px;">
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-9">
+                <div class="card mb-4 border-secondary" style="height: 300px;">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="text-muted mb-0">Наименование:</p>
+                            </div>
+                            <div class="col-sm-9">
+                                <p class="mb-0">{{ book.book_name }}</p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="text-muted mb-0">Автор:</p>
+                            </div>
+                            <div class="col-sm-9">
+                                <p class="mb-0">{{ book.book_author }}</p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="text-muted mb-0">Год издания:</p>
+                            </div>
+                            <div class="col-sm-9">
+                                <p class="mb-0">{{ book.year_publish }}</p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="text-muted mb-0">Кол-во оставшихся экземпляров:</p>
+                            </div>
+                            <div class="col-sm-9">
+                                <p class="mb-0">{{ book.num_copies }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 scroll">
+                <div class="card border-secondary" style="height: 350px;">
+                    <h5 class="card-header">Описание:</h5>
+                    <div class="card-body">
+                        <div class="scrollable">
+                            <p class="card-text">{{ book.book_description }}</p>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-transparent">
+                        <a href="{% url 'library:book_catalog' %}" class="btn btn-primary">Вернуться назад</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

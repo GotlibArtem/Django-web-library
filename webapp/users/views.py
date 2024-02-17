@@ -4,7 +4,7 @@ User's views for webapp project.
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.contrib.auth import login, logout
 from django.contrib import messages
 from django.shortcuts import render, redirect
@@ -74,6 +74,11 @@ def create_user(request):
                                      username=username,
                                      email=email,
                                      password=password,)
+
+            user = User.objects.get(username=username)
+            group = Group.objects.get(name='читатель')
+            user.groups.add(group)
+
             messages.success(request,
                              'Подзравляем, вы зарегистрированы!',
                              extra_tags='''alert alert-success '''
