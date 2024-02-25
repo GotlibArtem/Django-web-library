@@ -4,7 +4,7 @@
 
 <nav class="navbar navbar-expand-sm navbar-light bg-light mb-4">
     <a class="navbar-brand" href="{% url 'home' %}">
-        <img src="{% static 'img/label.png' %}" alt="" width="25" height="40">
+        <img src="{% static 'img/label_small.png' %}" alt="Logo" width="40" height="40">
     </a>
     <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId" aria-controls="collapsibleNavId" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -17,16 +17,26 @@
             </li>
             {% if request.user.is_authenticated %}
                 <li class="nav-item">
-                    <a class="nav-link" href=" {% url 'library:book_catalog' %}">Каталог книг</a>
+                    <a class="nav-link" href="{% url 'library:book_catalog' %}">Каталог книг</a>
                 </li>
             {% else %}
                 <li class="nav-item">
-                    <a class="nav-link" href=" {% url 'users:login_user' %}">Каталог книг</a>
+                    <a class="nav-link" href="{% url 'users:login_user' %}">Каталог книг</a>
                 </li>
             {% endif %}
-            {% if request.user|is_group:"читатель" %} 
+            {% if request.user|is_group:"Reader" %}
                 <li class="nav-item">
                     <a class="nav-link" href="#">Мои книги</a>
+                </li>
+            {% elif request.user|is_group:"Librarian" %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'library:select_category' %}">Добавить книгу</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'library:give_book' %}">Выдать книгу</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Учет выданных книг</a>
                 </li>
             {% endif %}
         </ul>

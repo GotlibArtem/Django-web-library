@@ -19,7 +19,7 @@
                 </div>
             </div>
             <div class="col-lg-9">
-                <div class="card mb-4 border-secondary" style="height: 300px;">
+                <div class="card mb-6 border-secondary" style="height: 300px;">
                     <div class="card-body">
                         <div class="row">
                             <div class="col-sm-3">
@@ -65,8 +65,8 @@
                 <div class="card border-secondary" style="height: 350px;">
                     <h5 class="card-header">Описание:</h5>
                     <div class="card-body">
-                        <div class="scrollable">
-                            <p class="card-text">{{ book.book_description }}</p>
+                        <div class="form-floating">
+                            <textarea class="form-control" disabled style="height: 197px; background: transparent;">{{ book.book_description }}</textarea>
                         </div>
                     </div>
                     <div class="card-footer bg-transparent">

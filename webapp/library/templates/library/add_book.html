@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block custom_css %}
+    <link rel="stylesheet" href="{% static 'css/books_style.css' %}">
+{% endblock custom_css %}
+
+{% block content %}
+    <div class="container">
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <div {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        <form action="" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-lg-3">
+                {% if book_category_id == 2 %}
+                    <div class="card mb-4 border-secondary" style="height: 400px;">
+                {% else %}
+                    <div class="card mb-4 border-secondary" style="height: 340px;">
+                {% endif %}
+                        <h5 class="card-header">Изображение:</h5>
+                        <div class="card-body text-center">
+                            {{ form.book_image }}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-9">
+                {% if book_category_id == 2 %}
+                    <div class="card mb-6 border-secondary" style="height: 400px;">
+                {% else %}
+                    <div class="card mb-6 border-secondary" style="height: 340px;">
+                {% endif %}
+                        <h5 class="card-header">Основная информация о книге:</h5>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p class="text-muted mb-0">Наименование:</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    {{ form.book_name }}
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p class="text-muted mb-0">Автор:</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    {{ form.book_author }}
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p class="text-muted mb-0">Год издания:</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    {{ form.year_publish }}
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p class="text-muted mb-0">Кол-во экземпляров:</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    {{ form.num_copies }}
+                                </div>
+                            </div>
+                            {% if book_category_id == 2 %}
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <p class="text-muted mb-0">Класс изучения:</p>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        {{ form.book_study_class }}
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card border-secondary" style="height: 260px;">
+                        <h5 class="card-header">Краткое описание:</h5>
+                        <div class="card-body">
+                            {{ form.book_description }}
+                        </div>
+                        <div class="card-footer bg-transparent">
+                            <input type="submit" class="btn btn-primary mb-3" value="Добавить"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock content %}

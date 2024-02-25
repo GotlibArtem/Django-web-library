@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block custom_css %}
+    <link rel="stylesheet" href="{% static 'css/books_style.css' %}">
+{% endblock custom_css %}
+
+{% block content %}
+    <div class="container text-center">
+        
+        <div class="row justify-content-center">
+            <div class="col-md-6 mt-5 mx-auto p-5"> 
+                {% if messages %}
+                    <div class="messages">
+                        {% for message in messages %}
+                            <div {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                <div class="card border-secondary text-center shadow-sm">
+                    <h5 class="card-header">Выберите категорию литературы:</h5>
+                    <div class="col-md-7 align-self-center">
+                        <div class="card-body">
+                            <form action="" method="POST">
+                                {% csrf_token %}
+                                <div class="row mb-3">
+                                    {{ form.book_category }}
+                                </div>
+                                <div class="row">
+                                    <button type="submit" class="btn btn-primary">Продолжить</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

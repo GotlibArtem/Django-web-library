@@ -15,9 +15,9 @@
                     <h3>Библиотека, в которой не скучно!</h3>
                     <hr>
                     {% if request.user.is_authenticated %}
-                        <a class="btn btn-light btn-lg" href="{% url 'library:book_catalog' %}" role="button">Взять книгу!</a>
+                        <a class="btn btn-light btn-lg" href="{% url 'library:book_catalog' %}" role="button">Найти книгу!</a>
                     {% else %}
-                        <a class="btn btn-light btn-lg" href="{% url 'users:login_user' %}" role="button">Взять книгу!</a>
+                        <a class="btn btn-light btn-lg" href="{% url 'users:login_user' %}" role="button">Найти книгу!</a>
                     {% endif %}
                 </div>
             </div>

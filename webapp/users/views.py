@@ -76,7 +76,7 @@ def create_user(request):
                                      password=password,)
 
             user = User.objects.get(username=username)
-            group = Group.objects.get(name='читатель')
+            group = Group.objects.get(name='Reader')
             user.groups.add(group)
 
             messages.success(request,
