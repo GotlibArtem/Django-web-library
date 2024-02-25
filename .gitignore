@@ -4,3 +4,4 @@ __pycache__/
 migrations/
 .vscode/
 env/
+!webapp/users/migrations/add_groups_and_permissions.py
