@@ -59,15 +59,15 @@ class StoreFictionBookAdmin(admin.ModelAdmin):
     """
     Описание админки для таблицы хранения художественных книг
     """
-    list_display = ('reader', 'book', 'num_books',
-                    'issue_day', 'period', 'return_day')
+    list_display = ('reader', 'book', 'num_books', 'issue_day',
+                    'planned_return_day', 'return_day', 'status_store')
     autocomplete_fields = ['reader', 'book']
     search_fields = ['reader', 'book']
     list_per_page = 5
     list_filter = ('reader', )
     fieldsets = [('Учет художественной литературы',
                   {'fields':
-                   ['reader', 'book', 'issue_day', 'period']
+                   ['reader', 'book', 'issue_day', 'planned_return_day']
                    })]
 
 
@@ -76,15 +76,16 @@ class StoreStudyBookAdmin(admin.ModelAdmin):
     """
     Описание админки для таблицы хранения учебных книг
     """
-    list_display = ('school_clase', 'book', 'num_books',
-                    'issue_day', 'period', 'return_day')
-    autocomplete_fields = ['school_clase', 'book']
-    search_fields = ['school_clase', 'book']
+    list_display = ('school_class', 'book', 'num_books', 'issue_day',
+                    'planned_return_day', 'return_day', 'status_store')
+    autocomplete_fields = ['school_class', 'book']
+    search_fields = ['school_class', 'book']
     list_per_page = 5
-    list_filter = ('school_clase', )
+    list_filter = ('school_class', )
     fieldsets = [('Учет учебной литературы',
                   {'fields':
-                   ['school_clase', 'book', 'num_books', 'issue_day', 'period']
+                   ['school_class', 'book', 'num_books', 'issue_day',
+                    'planned_return_day', 'status_store']
                    })]
 
 

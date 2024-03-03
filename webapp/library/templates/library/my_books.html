@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block custom_css %}
+    <link rel="stylesheet" href="{% static 'css/table_style.css' %}">
+{% endblock custom_css %}
+
+{% load auth_extras %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 mb-2">
+                <h1 class="text-center mb-3">Мои книги</h1>
+                <div>
+                    <div class="card mb-6 border-secondary" style="height: 610px;">
+                        <div class="card-header">
+                            <form class="form-inline">
+                                <div class="btn-group">
+                                    <a class="btn btn-{% if 'return_day_asc' in request.GET %}warning{% else %}primary{% endif %} mb-2" href="?return_day_asc=True" role="button"><i class="fas fa-sort-alpha-down"></i></a>
+                                    <a class="btn mb-2 disabled" role="button"> Плановый день возврата </a>
+                                    <a class="btn btn-{% if 'return_day_desc' in request.GET %}warning{% else %}primary{% endif %} mr-sm-2 mb-2" href="?return_day_desc=True" role="button"><i class="fas fa-sort-alpha-up"></i></a>
+                                </div>
+                                <div class="form-group ml-auto mr-sm-2 mb-2">
+                                    <input type="search" class="form-control" name="search" placeholder="Поиск" value={{ search_term }}>
+                                </div>
+                                <button type="submit" class="btn btn-primary mb-2"><i class="fas fa-search"></i></button>
+                            </form>
+                        </div>
+                        <div class="card-body" style="max-height: 515px; overflow: auto; scrollbar-width: none;">
+                            <table class="table table-hover" id="my_books">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th class="align-middle" data-type="string"></th>
+                                        <th class="align-middle" data-type="string">Наименование</th>
+                                        <th class="align-middle" data-type="string">Автор</th>
+                                        <th class="align-middle" data-type="number">Год издания</th>
+                                        <th class="align-middle" data-type="string">День выдачи</th>
+                                        <th class="align-middle" data-type="string">Плановый день возврата</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="table-group-divider">
+                                    {% for user_book in user_books %}
+                                        {% if not user_book.return_day %}
+                                            {% if user_book.planned_return_day < today %}
+                                                <tr class="table-danger">
+                                            {% else %}
+                                                <tr>
+                                            {% endif %}
+                                        {% else %}
+                                            <tr style="color: black; opacity: 0.5;">
+                                        {% endif %}
+                                                <td class="align-middle">
+                                                    {% if user_book.book.book_image %}
+                                                        <img class="img-fluid rounded-start" src="{{ user_book.book.book_image.url }}" style="height: 80px; width: 55px;">
+                                                    {% endif %}
+                                                </td>
+                                                <td class="align-middle">
+                                                    {{ user_book.book.book_name }}
+                                                </td>
+                                                <td class="align-middle">
+                                                    {{ user_book.book.book_author }}
+                                                </td>
+                                                <td class="align-middle">
+                                                    {{ user_book.book.year_publish }}
+                                                </td>
+                                                <td class="align-middle">
+                                                    {{ user_book.issue_day|date:'d.m.Y' }}
+                                                </td>
+                                                <td class="align-middle">
+                                                    {% if not user_book.return_day %}
+                                                        {{ user_book.planned_return_day|date:'d.m.Y' }}
+                                                    {% else %}
+                                                        {{ user_book.return_day|date:'d.m.Y' }}
+                                                    {% endif %}
+                                                </td>
+                                            </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}

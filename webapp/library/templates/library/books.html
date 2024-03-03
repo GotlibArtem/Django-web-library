@@ -3,119 +3,123 @@
 {% load static %}
 
 {% block custom_css %}
-    <link rel="stylesheet" href="{% static 'css/books_style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/table_style.css' %}">
 {% endblock custom_css %}
 
 {% load auth_extras %}
 
 {% block content %}
     <div class="container">
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <div {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
         <div class="row">
-            <div class="col-12">
+            <div class="col-lg-12 mb-2">
                 <h1 class="text-center mb-3">Каталог книг</h1>
-                {% if messages %}
-                    <div class="messages">
-                        {% for message in messages %}
-                            <div {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                        {% endfor %}
-                    </div>
-                {% endif %}
+                <div>
+                    <div class="card mb-6 border-secondary" style="height: 610px;">
+                        <div class="card-header">
+                            <form class="form-inline">
+                                <div class="btn-group">
+                                    <a class="btn btn-{% if 'book_name_asc' in request.GET %}warning{% else %}primary{% endif %} mb-2" href="?book_name_asc=True" role="button"><i class="fas fa-sort-alpha-down"></i></a>
+                                    <a class="btn mb-2 disabled" role="button"> По наименованию </a>
+                                    <a class="btn btn-{% if 'book_name_desc' in request.GET %}warning{% else %}primary{% endif %} mr-sm-2 mb-2" href="?book_name_desc=True" role="button"><i class="fas fa-sort-alpha-up"></i></a>
+                                </div>
+                                <div class="btn-group">
+                                    <a class="btn btn-{% if 'year_publish_asc' in request.GET %}warning{% else %}primary{% endif %} mb-2" href="?year_publish_asc=True" role="button"><i class="fas fa-sort-numeric-down"></i></a>
+                                    <a class="btn mb-2 disabled" role="button"> По году издания </a>
+                                    <a class="btn btn-{% if 'year_publish_desc' in request.GET %}warning{% else %}primary{% endif %} mr-sm-2 mb-2" href="?year_publish_desc=True" role="button"><i class="fas fa-sort-numeric-up"></i></a>
+                                </div>
+                                <div class="form-group ml-auto mr-sm-2 mb-2">
+                                    <input type="search" class="form-control" name="search" placeholder="Поиск" value={{ search_term }}>
+                                </div>
+                                <button type="submit" class="btn btn-primary mb-2"><i class="fas fa-search"></i></button>
+                            </form>
+                        </div>
+                        <div class="card-body" style="max-height: 515px;">
+                            <table class="table table-hover table-bordered" id="books">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th class="align-middle">Фото</th>
+                                        <th class="align-middle" data-type="string">Наименование книги</th>
+                                        <th class="align-middle" data-type="string">Автор</th>
+                                        <th class="align-middle" data-type="number">Год издания</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for book in books %}
+                                        <tr>
+                                            <td class="align-middle">
+                                                {% if book.book_image %}
+                                                    <img class="book_image" src="{{ book.book_image.url }}">
+                                                {% endif %}
+                                            </td>
+                                            <td class="align-middle">
+                                                {% if request.user|is_group:"Reader" %}
+                                                    <a href="{% url 'library:book_info' book.id %}">{{ book.book_name }}</a>
+                                                {% else %}
+                                                    <a href="{% url 'library:change_book' book.id %}">{{ book.book_name }}</a>
+                                                {% endif %}
+                                            </td>
+                                            <td class="align-middle">
+                                                {{ book.book_author }}
+                                            </td>
+                                            <td class="align-middle">
+                                                {{ book.year_publish }}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
 
-                <form class="form-inline">
-                    <div class="btn-group">
-                        <a class="btn btn-{% if 'book_name_asc' in request.GET %}warning{% else %}primary{% endif %} mb-2" href="?book_name_asc=True" role="button"><i class="fas fa-sort-alpha-down"></i></a>
-                        <a class="btn mb-2 disabled" role="button"> По наименованию </a>
-                        <a class="btn btn-{% if 'book_name_desc' in request.GET %}warning{% else %}primary{% endif %} mr-sm-2 mb-2" href="?book_name_desc=True" role="button"><i class="fas fa-sort-alpha-up"></i></a>
-                    </div>
-                    <div class="btn-group">
-                        <a class="btn btn-{% if 'year_publish_asc' in request.GET %}warning{% else %}primary{% endif %} mb-2" href="?year_publish_asc=True" role="button"><i class="fas fa-sort-numeric-down"></i></a>
-                        <a class="btn mb-2 disabled" role="button"> По году издания </a>
-                        <a class="btn btn-{% if 'year_publish_desc' in request.GET %}warning{% else %}primary{% endif %} mr-sm-2 mb-2" href="?year_publish_desc=True" role="button"><i class="fas fa-sort-numeric-up"></i></a>
-                    </div>
-                    <div class="form-group ml-auto mr-sm-2 mb-2">
-                        <input type="search" class="form-control" name="search" placeholder="Поиск" value={{ search_term }}>
-                    </div>
-                    <button type="submit" class="btn btn-primary mb-2"><i class="fas fa-search"></i></button>
-                </form>
-
-                <table class="table table-hover table-bordered" id="grid">
-                    <thead class="table-light">
-                        <tr>
-                            <th class="align-middle">Фото</th>
-                            <th class="align-middle" data-type="string">Наименование книги</th>
-                            <th class="align-middle" data-type="string">Автор</th>
-                            <th class="align-middle" data-type="number">Год издания</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for book in books %}
-                            <tr>
-                                <td class="align-middle">
-                                    {% if book.book_image %}
-                                        <img class="book_image" src="{{ book.book_image.url }}">
-                                    {% endif %}
-                                </td>
-                                <td class="align-middle">
-                                    {% if request.user|is_group:"Reader" %}
-                                        <a href="{% url 'library:book_info' book.id %}">{{ book.book_name }}</a>
-                                    {% else %}
-                                        <a href="{% url 'library:change_book' book.id %}">{{ book.book_name }}</a>
-                                    {% endif %}
-                                </td>
-                                <td class="align-middle">
-                                    {{ book.book_author }}
-                                </td>
-                                <td class="align-middle">
-                                    {{ book.year_publish }}
-                                </td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-
-                {% if books.paginator.num_pages > 1 %}
-                    <nav class="mt-3">
-                        <ul class="pagination">
-                            <li class="page-item">
-                            {% if books.has_previous %}
-                                <a class="page-link" href="?page={{ books.previous_page_number }}&{{ params }}" aria-label="Предыдущая">
-                            {% else %}
-                                <a class="page-link" aria-label="Предыдущая">
+                            {% if books.paginator.num_pages > 1 %}
+                                <nav class="mt-3">
+                                    <ul class="pagination">
+                                        <li class="page-item">
+                                        {% if books.has_previous %}
+                                            <a class="page-link" href="?page={{ books.previous_page_number }}&{{ params }}" aria-label="Предыдущая">
+                                        {% else %}
+                                            <a class="page-link" aria-label="Предыдущая">
+                                        {% endif %}
+                                                <span aria-hidden="true">&laquo;</span>
+                                            </a>
+                                        </li>
+                                        
+                                        {% for num_page in books.paginator.page_range %}
+                                            {% if num_page == books.number %}
+                                                <li class="page-item active">
+                                            {% else %}
+                                                <li class="page-item">
+                                            {% endif %}
+                                                    <a class="page-link" href="?page={{ num_page }}&{{ params }}">{{num_page}}</a>
+                                                </li>
+                                        {% endfor %}
+            
+                                        <li class="page-item">
+                                        {% if books.has_next %}
+                                            <a class="page-link" href="?page={{ books.next_page_number }}&{{ params }}" aria-label="Следующая">
+                                        {% else %}
+                                            <a class="page-link" aria-label="Следующая">
+                                        {% endif %}
+                                                <span aria-hidden="true">&raquo;</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </nav>
                             {% endif %}
-                                    <span aria-hidden="true">&laquo;</span>
-                                </a>
-                            </li>
-                            
-                            {% for num_page in books.paginator.page_range %}
-                                {% if num_page == books.number %}
-                                    <li class="page-item active">
-                                {% else %}
-                                    <li class="page-item">
-                                {% endif %}
-                                        <a class="page-link" href="?page={{ num_page }}&{{ params }}">{{num_page}}</a>
-                                    </li>
-                            {% endfor %}
-
-                            <li class="page-item">
-                            {% if books.has_next %}
-                                <a class="page-link" href="?page={{ books.next_page_number }}&{{ params }}" aria-label="Следующая">
-                            {% else %}
-                                <a class="page-link" aria-label="Следующая">
-                            {% endif %}
-                                    <span aria-hidden="true">&raquo;</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
-                {% endif %}
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
 {% endblock content %}
-
-<script src="{% static 'js/table_sort.js' %}"></script>

@@ -26,17 +26,17 @@
             {% endif %}
             {% if request.user|is_group:"Reader" %}
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Мои книги</a>
+                    <a class="nav-link" href="{% url 'library:my_books' %}">Мои книги</a>
                 </li>
             {% elif request.user|is_group:"Librarian" %}
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'library:select_category' %}">Добавить книгу</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'library:give_book' %}">Выдать книгу</a>
+                    <a class="nav-link" href="{% url 'library:select_reader' %}">Учет художественной литературы</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Учет выданных книг</a>
+                    <a class="nav-link" href="{% url 'library:select_class' %}">Учет учебной литературы</a>
                 </li>
             {% endif %}
         </ul>

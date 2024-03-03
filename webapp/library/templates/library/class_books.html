@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block custom_css %}
+    <link rel="stylesheet" href="{% static 'css/table_style.css' %}">
+{% endblock custom_css %}
+
+{% block content %}
+    <div class="container">
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <div {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        <div class="row mb-2">
+            <div class="col-lg-12">
+                <div class="card mb-6 border-secondary" style="height: 640px;">
+                    <div class="card-header">
+                        <form class="form-inline">
+                            <h5>Учебники, выданные {{ school_class.class_number }} {{ school_class.class_letter }} классу:</h5>
+                            <div class="form-group ml-auto mr-sm-2">
+                                <input type="search" class="form-control" name="search" placeholder="Поиск" value={{ search_term }}>
+                            </div>
+                            <button type="submit" class="btn btn-primary mr-sm-5"><i class="fas fa-search"></i></button>
+                            <a href="{% url 'library:generate_csv_report' school_class.id %}" class="btn btn-info">Скачать отчет</a>
+                        </form>
+                    </div>
+                    
+                    <div class="card-body">
+                        <table class="table table-hover" id="reader_books">
+                            <thead class="table-light">
+                                <tr>
+                                    <th class="align-middle" data-type="string">Учебник</th>
+                                    <th class="align-middle">Кол-во экземпляров</th>
+                                    <th class="align-middle">Планируемый день возврата</th>
+                                    <th class="align-middle"></th>
+                                    <th class="align-middle"></th>
+                                </tr>
+                            </thead>
+                            <tbody class="table-group-divider">
+                                {% for study_book in list_study_books %}
+                                    <form action="" method="POST" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    {% if not study_book.return_day %}
+                                            {% if study_book.planned_return_day < today %}
+                                                <tr class="table-danger">
+                                            {% else %}
+                                                <tr>
+                                            {% endif %}
+                                        {% else %}
+                                            <tr style="color: black; opacity: 0.5;">
+                                        {% endif %}
+                                            <td class="align-middle">
+                                                {{ study_book.book.book_name }} ({{ study_book.book.year_publish }}, {{ study_book.book.book_author }})
+                                            </td>
+                                            <td class="align-middle">
+                                                {% if not study_book.return_day %}
+                                                    <input class="form-control border border-primary text-center" type="number" name="num-books" value="{{ study_book.num_books }}" style="width: 50%; display: block; margin: 0 auto;">
+                                                {% else %}
+                                                    <a type="number">{{ study_book.num_books }}</a>
+                                                {% endif %}
+                                            </td>
+                                            <td class="align-middle">
+                                                {% if not study_book.return_day %}
+                                                    <input class="form-control border border-primary text-center" type="date" name="planned-return-day" value="{{ study_book.planned_return_day|date:'Y-m-d' }}">
+                                                {% else %}
+                                                    <a type="string">{{ study_book.return_day|date:'d.m.Y' }}</a>
+                                                {% endif %}
+                                            </td>
+                                            <td class="align-middle">
+                                                {% if not study_book.return_day %}
+                                                    <input type="submit" class="btn btn-warning btn-sm" name="change-store" value="Изменить"/>
+                                                {% endif %}
+                                            </td>
+                                            <td class="align-middle">
+                                                {% if not study_book.return_day %}
+                                                    <input type="submit" class="btn btn-success btn-sm" name="return-store" value="Вернуть"/>
+                                                {% endif %}
+                                            </td>
+                                            <input type="hidden" name="study-book-id" value="{{ study_book.id }}">
+                                        </tr>
+                                    </form>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+
+                        {% if list_study_books.paginator.num_pages > 1 %}
+                            <nav class="mt-3">
+                                <ul class="pagination">
+                                    <li class="page-item">
+                                    {% if list_study_books.has_previous %}
+                                        <a class="page-link" href="?page={{ list_study_books.previous_page_number }}&{{ params }}" aria-label="Предыдущая">
+                                    {% else %}
+                                        <a class="page-link" aria-label="Предыдущая">
+                                    {% endif %}
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+                                    
+                                    {% for num_page in list_study_books.paginator.page_range %}
+                                        {% if num_page == list_study_books.number %}
+                                            <li class="page-item active">
+                                        {% else %}
+                                            <li class="page-item">
+                                        {% endif %}
+                                                <a class="page-link" href="?page={{ num_page }}&{{ params }}">{{num_page}}</a>
+                                            </li>
+                                    {% endfor %}
+
+                                    <li class="page-item">
+                                    {% if list_study_books.has_next %}
+                                        <a class="page-link" href="?page={{ list_study_books.next_page_number }}&{{ params }}" aria-label="Следующая">
+                                    {% else %}
+                                        <a class="page-link" aria-label="Следующая">
+                                    {% endif %}
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <form action="" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-lg-12">
+                    <a href="{% url 'library:select_class' %}" class="btn btn-secondary mb-3">Вернуться назад</a>
+                    <input type="submit" class="btn btn-primary float-right mb-3" name="give_book" value="Выдать учебники"/>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock content %}

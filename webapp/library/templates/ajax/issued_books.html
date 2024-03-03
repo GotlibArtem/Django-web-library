@@ -1,0 +1,20 @@
+<script>
+    $(document).ready(function() {
+        $('#book-catalog').on('click', '#add-book', function() {
+            var $tr = $(this).closest('tr');
+            var book_name = $tr.find('td:first').text();
+
+            $.ajax({
+            url: '/give_fiction_book/' + reader.id,
+            type: 'GET',
+            data: {
+                'csrfmiddlewaretoken': '{{ csrf_token }}',
+                'book_name': book_name
+            },
+            success: function(data) {
+                $('#issued-books').append('<tr><td>' + book_name + '</td></tr>');
+            }
+            });
+        });
+    });
+</script>

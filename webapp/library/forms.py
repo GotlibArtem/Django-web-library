@@ -4,7 +4,8 @@ Library's forms for webapp project.
 
 from django.forms import Form, ModelChoiceField, CharField, IntegerField
 from django.forms import Select, TextInput, ImageField, Textarea, FileInput
-from .models import Book, Book_Category
+from django.forms import DateField, DateInput
+from .models import Book_Category
 
 
 class BookCategoryForm(Form):
@@ -18,6 +19,7 @@ class BookCategoryForm(Form):
             attrs={'class': 'form-select form-select-lg text-center'}
         )
     )
+
 
 class BookForm(Form):
     """
@@ -88,6 +90,58 @@ class BookForm(Form):
                 'class': 'form-control',
                 'type': 'file',
                 'name': 'book_image'
+            }
+        )
+    )
+
+
+class GiveFictionBookForm(Form):
+    """
+    Форма выдачи художественной литературы
+    """
+    issue_day = DateField(
+        label='Дата выдачи',
+        widget=DateInput(
+            attrs={
+                'type': 'date',
+                'class': 'form-control border border-primary text-center',
+                'placeholder': 'Дата выдачи'
+            }
+        )
+    )
+    planned_return_day = DateField(
+        label='Предполагаемый день возврата',
+        widget=DateInput(
+            attrs={
+                'type': 'date',
+                'class': 'form-control border border-primary text-center',
+                'placeholder': 'Предполагаемый день возврата'
+            }
+        )
+    )
+
+
+class GiveStudyBookForm(Form):
+    """
+    Форма выдачи учебной литературы
+    """
+    issue_day = DateField(
+        label='Дата выдачи',
+        widget=DateInput(
+            attrs={
+                'type': 'date',
+                'class': 'form-control border border-primary text-center',
+                'placeholder': 'Дата выдачи'
+            }
+        )
+    )
+    planned_return_day = DateField(
+        label='Предполагаемый день возврата',
+        widget=DateInput(
+            attrs={
+                'type': 'date',
+                'class': 'form-control border border-primary text-center',
+                'placeholder': 'Предполагаемый день возврата'
             }
         )
     )

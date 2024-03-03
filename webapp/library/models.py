@@ -57,6 +57,7 @@ class Book(models.Model):
     )
     book_image = models.ImageField(
         upload_to='library/',
+        null=True, blank=True,
         verbose_name='Изображение', db_comment='Путь к изображению'
     )
 
@@ -113,13 +114,20 @@ class Store_Fiction_Book(models.Model):
     issue_day = models.DateField(
         auto_now_add=True, verbose_name='День выдачи', db_comment='День выдачи'
     )
-    period = models.IntegerField(
-        default=30, null=False,
-        verbose_name='Период возврата', db_comment='Период возврата'
+    planned_return_day = models.DateField(
+        null=False,
+        verbose_name='Планируемый день возврата', db_comment='Планируемый день возврата'
     )
-    return_day = models.DateField(  
+    return_day = models.DateField(
+        null=True, blank=True,
         verbose_name='День возврата', db_comment='День возврата'
     )
+    status_store = models.BooleanField(
+        default=False,
+        verbose_name='Статус записи (0 - в процессе выдачи, 1 - книга выдана)',
+        db_comment='Статус записи (0 - в процессе выдачи, 1 - книга выдана)'
+    )
+
 
     class Meta:
         """
@@ -146,7 +154,7 @@ class Store_Study_Book(models.Model):
     """
     Таблица выдачи учебной литературы
     """
-    school_clase = models.ForeignKey(
+    school_class = models.ForeignKey(
         School_Class, on_delete=models.CASCADE,
         verbose_name='Школьный класс', db_comment='id класса'
     )
@@ -160,12 +168,18 @@ class Store_Study_Book(models.Model):
     issue_day = models.DateField(
         auto_now_add=True, verbose_name='День выдачи', db_comment='День выдачи'
     )
-    period = models.IntegerField(
-        default=273, null=False,
-        verbose_name='Период возврата', db_comment='Период возврата'
+    planned_return_day = models.DateField(
+        null=False,
+        verbose_name='Планируемый день возврата', db_comment='Планируемый день возврата'
     )
     return_day = models.DateField(
+        null=True, blank=True,
         verbose_name='День возврата', db_comment='День возврата'
+    )
+    status_store = models.BooleanField(
+        default=False,
+        verbose_name='Статус записи (0 - в процессе выдачи, 1 - книга выдана)',
+        db_comment='Статус записи (0 - в процессе выдачи, 1 - книга выдана)'
     )
 
     class Meta:

@@ -95,12 +95,14 @@
                             {{ form.book_description }}
                         </div>
                         <div class="card-footer bg-transparent">
-                            <input type="submit" class="btn btn-warning mb-3" name="change" value="Изменить"/>
+                            <a href="{% url 'library:book_catalog' %}" class="btn btn-primary mb-3">Вернуться назад</a>
                             <input type="submit" class="btn btn-danger mb-3" name="delete" value="Удалить" style="float: right;"/>
+                            <input type="submit" class="btn btn-warning mb-3 me-3" name="change" value="Изменить" style="float: right;"/>
                         </div>
                     </div>
                 </div>
             </div>
         </form>
     </div>
+
 {% endblock content %}

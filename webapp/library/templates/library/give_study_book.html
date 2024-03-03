@@ -1,0 +1,206 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block custom_css %}
+    <link rel="stylesheet" href="{% static 'css/table_style.css' %}">
+{% endblock custom_css %}
+
+{% block content %}
+    <div class="container">
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <div {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        <div class="row mb-2">
+            <div class="col-lg-12">
+                <div class="card mb-6 border-secondary" style="height: 410px;">
+                    <div class="card-header">
+                        <form class="form-inline">
+                            <h5>Каталог учебников:</h5>
+                            <div class="form-group ml-auto mr-sm-2">
+                                <input type="search" class="form-control" name="search" placeholder="Поиск" value={{ search_term }}>
+                            </div>
+                            <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
+                        </form>
+                    </div>
+                    
+                    <div class="card-body">
+                        <table class="table table-hover" id="study_books">
+                            <thead class="table-light">
+                                <tr>
+                                    <th class="align-middle" data-type="string">Наименование</th>
+                                    <th class="align-middle" data-type="string">Автор</th>
+                                    <th class="align-middle" data-type="number">Год издания</th>
+                                    <th class="align-middle" data-type="number">Класс изучения</th>
+                                    <th class="align-middle" data-type="number">Кол-во экземпляров</th>
+                                    <th class="align-middle"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for book in books %}
+                                    <form action="" method="POST" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                        {% if book.num_copies == 0 %}
+                                            <tr class="table-warning">
+                                                <td class="align-middle">
+                                                    {{ book.book_name }}
+                                                </td>
+                                                <td class="align-middle">
+                                                    {{ book.book_author }}
+                                                </td>
+                                                <td class="align-middle">
+                                                    {{ book.year_publish }}
+                                                </td>
+                                                <td class="align-middle">
+                                                    {{ book.book_study_class }}
+                                                </td>
+                                                <td class="align-middle">
+                                                    {{ book.num_copies }}
+                                                </td>
+                                                <td class="align-middle"></td>
+                                            </tr>
+                                        {% else %}
+                                            <tr>
+                                                <td class="align-middle">
+                                                    {{ book.book_name }}
+                                                </td>
+                                                <td class="align-middle">
+                                                    {{ book.book_author }}
+                                                </td>
+                                                <td class="align-middle">
+                                                    {{ book.year_publish }}
+                                                </td>
+                                                <td class="align-middle">
+                                                    {{ book.book_study_class }}
+                                                </td>
+                                                <td class="align-middle">
+                                                    <input class="form-control border border-primary text-center" type="number" name="num-books" value="{{ book.num_copies }}" style="width: 50%; display: block; margin: 0 auto;">
+                                                </td>
+                                                <td class="align-middle">
+                                                    <button type="submit" class="btn float-right btn-success" name="add-issued-book" style="height: 80%; display: flex; align-items: center;"><i class="fas fa-plus"></i></button>
+                                                </td>
+                                                <input type="hidden" name="study-book-id" type="number" value="{{ book.id }}">
+                                            </tr>
+                                        {% endif %}
+                                    </form>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+
+                        {% if books.paginator.num_pages > 1 %}
+                            <nav class="mt-3">
+                                <ul class="pagination">
+                                    <li class="page-item">
+                                    {% if books.has_previous %}
+                                        <a class="page-link" href="?page={{ books.previous_page_number }}&{{ params }}" aria-label="Предыдущая">
+                                    {% else %}
+                                        <a class="page-link" aria-label="Предыдущая">
+                                    {% endif %}
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+                                    
+                                    {% for num_page in books.paginator.page_range %}
+                                        {% if num_page == books.number %}
+                                            <li class="page-item active">
+                                        {% else %}
+                                            <li class="page-item">
+                                        {% endif %}
+                                                <a class="page-link" href="?page={{ num_page }}&{{ params }}">{{num_page}}</a>
+                                            </li>
+                                    {% endfor %}
+
+                                    <li class="page-item">
+                                    {% if books.has_next %}
+                                        <a class="page-link" href="?page={{ books.next_page_number }}&{{ params }}" aria-label="Следующая">
+                                    {% else %}
+                                        <a class="page-link" aria-label="Следующая">
+                                    {% endif %}
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 mb-2">
+                <div>
+                    <div class="card mb-6 border-secondary" style="height: 210px;">
+                        <div class="card-header">
+                            <form class="form-inline">
+                                <h5>Выдать следующие учебники:</h5>
+                            </form>
+                        </div>
+                        <div class="card-body" style="max-height: 146px; overflow: auto; scrollbar-width: none;">
+                            <table class="table table-hover" id="issued_study_books">
+                                <tbody>
+                                    {% for issued_book in issued_books %}
+                                        <form action="" method="POST" enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                            <tr>
+                                                <td class="align-middle">
+                                                    {{ issued_book.book.book_name }}
+                                                </td>
+                                                <td class="align-middle">
+                                                    {{ issued_book.book.book_author }}
+                                                </td>
+                                                <td class="align-middle">
+                                                    {{ issued_book.book.year_publish }}
+                                                </td>
+                                                <td class="align-middle">
+                                                    {{ issued_book.book.book_study_class }}
+                                                </td>
+                                                <td class="align-middle">
+                                                    {{ issued_book.num_books }}
+                                                </td>
+                                                <td class="align-middle">
+                                                    <button type="submit" class="btn float-right btn-danger" name="delete-issued-book" style="height: 80%; display: flex; align-items: center;"><i class="fas fa-times"></i></button>
+                                                </td>
+                                                <input type="hidden" name="issued-book-id" type="number" value="{{ issued_book.id }}">
+                                            </tr>
+                                        </form>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <form action="" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-sm-2">
+                    <a href="{% url 'library:class_books' school_class.id %}" class="btn btn-secondary mb-3">Вернуться назад</a>
+                </div>
+                <div class="col-sm-2">
+                    <p class="text-right text-muted mb-0">День выдачи:</p>
+                </div>
+                <div class="col-sm-2">
+                    {{ form.issue_day }}
+                </div>
+                <div class="col-sm-2">
+                    <p class="text-right text-muted mb-0">Предполагаемый день возврата:</p>
+                </div>
+                <div class="col-sm-2">
+                    {{ form.planned_return_day }}
+                </div>
+                <div class="col-sm-2">
+                    <input type="submit" class="btn float-right btn-primary mb-3" name="give_books" value="Выдать учебники"/>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock content %}

@@ -1,0 +1,437 @@
+/* css style for books.html */
+
+#books {
+    width: 100%;
+    table-layout: fixed;
+}
+
+#books tr {
+    height: 90px;
+}
+
+#books th {
+    vertical-align: top;
+    text-align: left;
+    cursor: pointer;
+}
+
+#books td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    height: 80px;
+    line-height: 35px;
+}
+
+#books th:nth-child(1) {
+    width: 10%;
+    text-align: center;
+}
+
+#books td:nth-child(1) {
+    text-align: center;
+    border: none;
+}
+
+#books th:nth-child(2) {
+    width: 55%;
+}
+
+#books td:nth-child(2) {
+    height: 80px;
+}
+  
+#books th:nth-child(3) {
+    width: 25%;
+}
+
+#books td:nth-child(3) {
+    height: 80px;
+}
+  
+#books th:nth-child(4) {
+    width: 10%;
+    text-align: center;
+}
+
+#books td:nth-child(4) {
+    text-align: center;
+}
+
+img.book_image {
+    height: 65px;
+}
+
+img.book_image_large {
+    height: 120px;
+    width: 120px;
+}
+
+.scrollable{
+    overflow-y: auto;
+    max-height: 300px;
+}
+
+/* css style for reader_books.html */
+
+#reader_books {
+    width: 100%;
+    table-layout: fixed;
+    border-style: solid;
+}
+
+#reader_books th {
+    vertical-align: top;
+    text-align: left;
+    cursor: pointer;
+}
+
+#reader_books td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    height: 70px;
+    line-height: 35px;
+}
+
+#reader_books th:nth-child(1) {
+    width: 50%;
+}
+
+#reader_books td:nth-child(1) {
+    height: 40px;
+    text-align: start;
+}
+
+#reader_books th:nth-child(2) {
+    text-align: center;
+    width: 15%;
+}
+
+#reader_books td:nth-child(2) {
+    text-align: center;
+    height: 40px;
+}
+  
+#reader_books th:nth-child(3) {
+    width: 15%;
+    text-align: center;
+}
+
+#reader_books td:nth-child(3) {
+    text-align: center;
+    height: 40px;
+}
+
+
+#reader_books th:nth-child(4) {
+    width: 10%;
+    text-align: center;
+}
+
+#reader_books td:nth-child(4) {
+    text-align: center;
+    height: 40px;
+}
+
+#reader_books th:nth-child(5) {
+    width: 10%;
+    text-align: center;
+}
+
+#reader_books td:nth-child(5) {
+    text-align: center;
+    height: 40px;
+}
+
+/* css style for give_fiction_book.html */
+
+#fiction_books {
+    width: 100%;
+    table-layout: fixed;
+    border-style: solid;
+}
+
+#fiction_books th {
+    vertical-align: top;
+    text-align: left;
+    cursor: pointer;
+}
+
+#fiction_books td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    height: 60px;
+    line-height: 35px;
+}
+
+#fiction_books th:nth-child(1) {
+    width: 46%;
+}
+
+
+#fiction_books th:nth-child(2) {
+    width: 20%;
+}
+
+  
+#fiction_books th:nth-child(3) {
+    width: 12%;
+    text-align: center;
+}
+
+#fiction_books td:nth-child(3) {
+    text-align: center;
+}
+  
+#fiction_books th:nth-child(4) {
+    width: 17%;
+    text-align: center;
+}
+
+#fiction_books td:nth-child(4) {
+    text-align: center;
+}
+
+#fiction_books th:nth-child(5) {
+    width: 5%;
+    text-align: center;
+}
+
+#fiction_books td:nth-child(5) {
+    text-align: center;
+}
+
+#issued_fiction_books {
+    width: 100%;
+    table-layout: fixed;
+    border-style: solid;
+}
+
+#issued_fiction_books td {
+    vertical-align: top;
+    text-align: left;
+    cursor: pointer;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    height: 60px;
+    line-height: 35px;
+}
+
+#issued_fiction_books td:nth-child(1) {
+    width: 46%;
+}
+
+
+#issued_fiction_books td:nth-child(2) {
+    width: 20%;
+}
+
+  
+#issued_fiction_books td:nth-child(3) {
+    width: 12%;
+    text-align: center;
+}
+
+#issued_fiction_books td:nth-child(4) {
+    width: 17%;
+    text-align: center;
+}
+
+#issued_fiction_books td:nth-child(5) {
+    width: 5%;
+    text-align: center;
+}
+
+/* css style for give_study_book.html */
+
+#study_books {
+    width: 100%;
+    table-layout: fixed;
+    border-style: solid;
+}
+
+#study_books th {
+    vertical-align: top;
+    text-align: left;
+    cursor: pointer;
+}
+
+#study_books td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    height: 60px;
+    line-height: 35px;
+}
+
+#study_books th:nth-child(1) {
+    width: 34%;
+}
+
+
+#study_books th:nth-child(2) {
+    width: 20%;
+}
+
+  
+#study_books th:nth-child(3) {
+    width: 12%;
+    text-align: center;
+}
+
+#study_books td:nth-child(3) {
+    text-align: center;
+}
+
+#study_books th:nth-child(4) {
+    width: 12%;
+    text-align: center;
+}
+
+#study_books td:nth-child(4) {
+    text-align: center;
+}
+
+#study_books th:nth-child(5) {
+    width: 17%;
+    text-align: center;
+}
+
+#study_books td:nth-child(5) {
+    text-align: center;
+}
+
+#study_books th:nth-child(6) {
+    width: 5%;
+    text-align: center;
+}
+
+#study_books td:nth-child(6) {
+    text-align: center;
+}
+
+
+#issued_study_books {
+    width: 100%;
+    table-layout: fixed;
+    border-style: solid;
+}
+
+#issued_study_books td {
+    vertical-align: top;
+    text-align: left;
+    cursor: pointer;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    height: 60px;
+    line-height: 35px;
+}
+
+#issued_study_books td:nth-child(1) {
+    width: 34%;
+}
+
+
+#issued_study_books td:nth-child(2) {
+    width: 20%;
+}
+
+  
+#issued_study_books td:nth-child(3) {
+    width: 12%;
+    text-align: center;
+}
+
+#issued_study_books td:nth-child(4) {
+    width: 12%;
+    text-align: center;
+}
+
+#issued_study_books td:nth-child(5) {
+    width: 17%;
+    text-align: center;
+}
+
+#issued_study_books td:nth-child(6) {
+    width: 5%;
+    text-align: center;
+}
+
+/* css style my_books.html */
+
+#my_books {
+    width: 100%;
+    table-layout: fixed;
+    border-style: solid;
+}
+
+#my_books th {
+    vertical-align: top;
+    text-align: left;
+    cursor: pointer;
+}
+
+#my_books td {
+    white-space: nowrap;
+    height: 60px;
+    line-height: 35px;
+}
+
+#my_books th:nth-child(1) {
+    width: 10%;
+}
+
+#my_books th:nth-child(2) {
+    width: 40%;
+}
+
+#my_books td:nth-child(2) {
+    word-wrap: break-word;
+    white-space: normal;
+    line-height: 1.5;
+    max-height: 60px;
+}
+
+  
+#my_books th:nth-child(3) {
+    width: 15%;
+    text-align: center;
+}
+
+#my_books td:nth-child(3) {
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+#my_books th:nth-child(4) {
+    width: 10%;
+    text-align: center;
+}
+
+#my_books td:nth-child(4) {
+    text-align: center;
+}
+
+#my_books th:nth-child(5) {
+    width: 10%;
+    text-align: center;
+}
+
+#my_books td:nth-child(5) {
+    text-align: center;
+}
+
+#my_books th:nth-child(6) {
+    width: 15%;
+    text-align: center;
+}
+
+#my_books td:nth-child(6) {
+    text-align: center;
+}
