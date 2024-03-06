@@ -79,26 +79,27 @@ def book_catalog(request):
         all_books = Book.objects.all()
 
     search_term = ''
+    # Сортировка по наименованию книги
     if 'book_name_asc' in request.GET:
         all_books = all_books.order_by('book_name')
     if 'book_name_desc' in request.GET:
         all_books = all_books.order_by('-book_name')
-
+    # Сортировка по году публикации книги
     if 'year_publish_asc' in request.GET:
         all_books = all_books.order_by('year_publish')
     if 'year_publish_desc' in request.GET:
         all_books = all_books.order_by('-year_publish')
-
+    # Поиск по наименованию, автору и году публикации
     if 'search' in request.GET:
         search_term = request.GET['search']
         all_books = (all_books.filter(book_name__icontains=search_term) |
                      all_books.filter(book_author__icontains=search_term) |
                      all_books.filter(year_publish__icontains=search_term))
 
+    # Пагинация
     paginator = Paginator(all_books, 4)
     page = request.GET.get('page')
     books = paginator.get_page(page)
-
     get_dict_copy = request.GET.copy()
     params = get_dict_copy.pop('page', True) and get_dict_copy.urlencode()
 
@@ -140,15 +141,16 @@ def get_my_books(request):
     """
     current_user = request.user
     user_books = Store_Fiction_Book.objects.filter(
-        reader_id=current_user.id,
-        book_id=F('book__id')
+        reader_id=current_user.id
     ).order_by('planned_return_day')
 
     search_term = ''
+    # Сортировка по плановой дате возврата
     if 'return_day_asc' in request.GET:
         user_books = user_books.order_by('planned_return_day')
     if 'return_day_desc' in request.GET:
         user_books = user_books.order_by('-planned_return_day')
+    # Поиск по наименованию книги
     if 'search' in request.GET:
         search_term = request.GET['search']
         user_books = user_books.filter(
@@ -353,10 +355,10 @@ def get_reader_books(request, reader_id):
     """
     reader = User.objects.get(id=reader_id)
     reader_books = Store_Fiction_Book.objects.filter(
-        reader_id=reader_id,
-        book_id=F('book__id')
+        reader_id=reader_id
     ).order_by('-return_day')
     search_term = ''
+    # Поиск
     if 'search' in request.GET:
         search_term = request.GET['search']
         reader_books = Store_Fiction_Book.objects.filter(
@@ -364,10 +366,10 @@ def get_reader_books(request, reader_id):
             book__book_name__icontains=search_term
         )
 
+    # Пагинация
     paginator = Paginator(reader_books, 3)
     page = request.GET.get('page')
     list_fiction_books = paginator.get_page(page)
-
     get_dict_copy = request.GET.copy()
     params = get_dict_copy.pop('page', True) and get_dict_copy.urlencode()
 
@@ -424,12 +426,14 @@ def give_fiction_book(request, reader_id):
     all_books = Book.objects.filter(book_category_id=1).order_by('book_name')
 
     search_term = ''
+    # Поиск
     if 'search' in request.GET:
         search_term = request.GET['search']
         all_books = (all_books.filter(Q(book_name__icontains=search_term) |
                                       Q(book_author__icontains=search_term) |
                                       Q(year_publish__icontains=search_term)))
 
+    # Пагинация
     paginator = Paginator(all_books, 3)
     page = request.GET.get('page')
     books = paginator.get_page(page)

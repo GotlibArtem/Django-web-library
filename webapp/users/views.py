@@ -3,13 +3,14 @@ User's views for webapp project.
 """
 
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
+from django.contrib.auth.views import PasswordChangeView
 from django.contrib.auth.models import User, Group
-from django.contrib.auth import login, logout
+from django.contrib.auth import login, logout, update_session_auth_hash
 from django.contrib import messages
 from django.shortcuts import render, redirect
 
-from .forms import UserRegistrationForm
+from .forms import UserRegistrationForm, UserProfileForm, MyPasswordChangeForm
 
 
 def login_user(request):
@@ -84,7 +85,55 @@ def create_user(request):
                              extra_tags='''alert alert-success '''
                                         '''alert-dismissible fade show''')
             return redirect('users:login_user')
-    else:
-        form = UserRegistrationForm()
+
+    form = UserRegistrationForm()
 
     return render(request, 'users/register.html', {"form": form})
+
+
+@login_required
+def profile_view(request):
+    """
+    Профиль пользователя
+    """
+    user = request.user
+
+    if request.method == 'POST' and 'change_password' in request.POST:
+        password_form = MyPasswordChangeForm(request.user, request.POST)
+        if password_form.is_valid():
+            user = password_form.save()
+            update_session_auth_hash(request, user)
+            messages.success(
+                request,
+                'Пароль успешно изменен!',
+                extra_tags='''alert alert-success '''
+                           '''alert-dismissible fade show'''
+            )
+            return redirect('users:profile')
+
+    if request.method == 'POST' and 'change_name' in request.POST:
+        name_form = UserProfileForm(data=request.POST)
+        if name_form.is_valid():
+            user.first_name = name_form.cleaned_data.get('first_name')
+            user.last_name = name_form.cleaned_data.get('last_name')
+            user.save()
+            messages.success(
+                request,
+                'Имя и/или фамилия пользователя успешно изменены!',
+                extra_tags='''alert alert-success '''
+                           '''alert-dismissible fade show'''
+            )
+            return redirect('users:profile')
+
+    password_form = MyPasswordChangeForm(user)
+    name_form = UserProfileForm(initial={
+        'first_name': user.first_name,
+        'last_name': user.last_name
+    })
+
+    context = {
+        'user': user,
+        'password_form': password_form,
+        'name_form': name_form
+    }
+    return render(request, 'users/profile.html', context)
