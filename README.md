@@ -12,7 +12,7 @@
 git clone https://github.com/GotlibArtem/Django_web_library.git
 ```
 2. Создайте базу данных PostgreSQL через pgAdmin или иную СУБД.
-3. В файле 'webapp\webapp\settings.py' и заполните данные для подключения к вашей базе данных:
+3. В файле 'webapp\webapp\settings.py' заполните данные для подключения к вашей базе данных:
 ```
 DB_NAME = 'Наименование вашей базы данных'
 DB_USER = 'Имя пользователя'
