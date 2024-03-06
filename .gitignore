@@ -1,7 +1,6 @@
 config.py
 *.db
 __pycache__/
-migrations/
+webapp/library/migrations/
 .vscode/
 env/
-!webapp/users/migrations/add_groups_and_permissions.py

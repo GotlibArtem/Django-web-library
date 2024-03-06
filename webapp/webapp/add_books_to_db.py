@@ -1,19 +1,22 @@
-import tkinter as tk
-from tkinter import filedialog, StringVar, Entry
+import os
 import pandas as pd
 import psycopg2
+import tkinter as tk
+from tkinter import filedialog, StringVar, Entry
+from settings import DB_NAME, DB_USER, DB_PASSWORD
 
 
 # Функция для загрузки файла
-def load_file(dbname, username, password):
+def load_file(dbname, user, password):
     # Подключение к базе данных
-    conn = psycopg2.connect(dbname=dbname, user=username, password=password)
+    conn = psycopg2.connect(dbname=dbname, user=user, password=password)
 
     # Создание курсора
     cursor = conn.cursor()
 
     # Загрузка данных из Excel файла
-    file_path = filedialog.askopenfilename(filetypes=[("Excel files", "*.xlsx")])
+    parent_directory = os.path.abspath(os.path.join(os.getcwd(), '..', '..'))
+    file_path = os.path.join(parent_directory, 'Таблица книг.xlsx')
     df = pd.read_excel(file_path)
 
     # Добавление данных в таблицу library_book_category
@@ -43,40 +46,7 @@ def load_file(dbname, username, password):
 
 
 def main():
-    # Создание окна tkinter
-    root = tk.Tk()
-
-    # Создание полей для ввода данных подключения к базе данных
-    dbname_var = StringVar()
-    dbname_label = tk.Label(root, text="Имя БД:")
-    dbname_label.pack()
-    dbname_entry = Entry(root, textvariable=dbname_var)
-    dbname_entry.pack()
-
-    username_var = StringVar()
-    username_label = tk.Label(root, text="Имя пользователя:")
-    username_label.pack()
-    username_entry = Entry(root, textvariable=username_var)
-    username_entry.pack()
-
-    password_var = StringVar()
-    password_label = tk.Label(root, text="Пароль:")
-    password_label.pack()
-    password_entry = Entry(root, textvariable=password_var, show='*')
-    password_entry.pack()
-
-    # Создание кнопки для загрузки файла
-    load_file_button = tk.Button(root,
-                                text="Выберите excel файл с книгами",
-                                command=lambda: load_file(
-                                    dbname_var.get(),
-                                    username_var.get(),
-                                    password_var.get()
-                                ))
-    load_file_button.pack()
-
-    root.mainloop()
-
+    load_file(DB_NAME, DB_USER, DB_PASSWORD)
 
 if __name__ == '__main__':
     main()
