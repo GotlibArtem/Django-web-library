@@ -27,7 +27,7 @@ env\scripts\activate
 ```
 pip install -r requirements.txt
 ```
-6. Перейдите в подпапку проекта \webapp
+6. Перейдите в подпапку проекта \webapp\webapp
 7. Создайте пользователя superuser для администрирования приложением:
 ```
 python manage.py createsuperuser
