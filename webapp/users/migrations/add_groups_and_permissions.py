@@ -42,9 +42,8 @@ def add_groups_and_permissions(apps, schema_editor):
 
 class Migration(migrations.Migration):
 
-    initial = True
-
     dependencies = [
+        ('accounts', '0001_initial'),
     ]
 
     operations = [
