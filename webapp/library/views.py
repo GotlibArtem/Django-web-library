@@ -74,9 +74,9 @@ def book_catalog(request):
     Каталог книг
     """
     if check_group(request, group_name='Reader'):
-        all_books = Book.objects.filter(book_category_id=1)
+        all_books = Book.objects.filter(book_category_id=1).order_by('-id')
     else:
-        all_books = Book.objects.all()
+        all_books = Book.objects.all().order_by('-id')
 
     search_term = ''
     # Сортировка по наименованию книги
